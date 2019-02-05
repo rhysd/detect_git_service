@@ -1,7 +1,8 @@
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn it_works() {
-        assert_eq!(2 + 2, 4);
-    }
-}
+extern crate url;
+
+mod error;
+mod git;
+mod service;
+
+pub use crate::error::Error;
+pub use crate::service::GitService;
