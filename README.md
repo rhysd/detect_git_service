@@ -2,8 +2,8 @@
 ==========================
 [![crates.io][crate-badge]][crate]
 [![documentation][doc-badge]][doc]
-<!-- [![CI on Linux and macOS][travis-ci-badge]][travis-ci] -->
-<!-- [![CI on Windows][appveyor-badge]][appveyor] -->
+[![CI on Linux and macOS][travis-ci-badge]][travis-ci]
+[![CI on Windows][appveyor-badge]][appveyor]
 
 [`detect_git_service`][crate] is a small crate to detect the Git hosting service from a path.
 
@@ -52,8 +52,8 @@ Distributed under [the MIT License](LICENSE).
 [crate-badge]: https://img.shields.io/crates/v/detect_git_service.svg
 [doc-badge]: https://docs.rs/detect_git_service/badge.svg
 [doc]: https://docs.rs/detect_git_service
-<!-- [appveyor-badge]: https://ci.appveyor.com/api/projects/status/hogehoge?svg=true -->
-<!-- [appveyor]: https://ci.appveyor.com/project/rhysd/detect_git_service/branch/master           -->
-<!-- [travis-ci-badge]: https://travis-ci.org/rhysd/detect_git_service.svg?branch=master          -->
-<!-- [travis-ci]: https://travis-ci.org/rhysd/detect_git_service                                  -->
+[appveyor-badge]: https://ci.appveyor.com/api/projects/status/fgkdy3ufjgbrg1xy?svg=true
+[appveyor]: https://ci.appveyor.com/project/rhysd/detect_git_service/branch/master
+[travis-ci-badge]: https://travis-ci.org/rhysd/detect_git_service.svg?branch=master
+[travis-ci]: https://travis-ci.org/rhysd/detect_git_service
 
