@@ -1,3 +1,4 @@
+extern crate diff_enum;
 extern crate url;
 
 mod error;

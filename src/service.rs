@@ -3,28 +3,17 @@ use crate::git::Git;
 use std::path::Path;
 use url::Url;
 
+#[diff_enum::common_fields{
+    user: String,
+    repo: String,
+    branch: Option<String>,
+}]
 #[derive(Debug)]
 pub enum GitService {
-    GitHub {
-        user: String,
-        repo: String,
-        branch: Option<String>,
-    },
-    GitHubEnterprise {
-        user: String,
-        repo: String,
-        branch: Option<String>,
-    },
-    GitLab {
-        user: String,
-        repo: String,
-        branch: Option<String>,
-    },
-    Bitbucket {
-        user: String,
-        repo: String,
-        branch: Option<String>,
-    },
+    GitHub,
+    GitHubEnterprise,
+    GitLab,
+    Bitbucket,
 }
 
 impl GitService {
