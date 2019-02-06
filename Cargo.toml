@@ -1,6 +1,6 @@
 [package]
 name = "detect_git_service"
-version = "1.0.0"
+version = "1.0.1-alpha.0"
 authors = ["rhysd <https://rhysd.github.io>"]
 edition = "2018"
 description = "Detect Git hosting service from file path"
