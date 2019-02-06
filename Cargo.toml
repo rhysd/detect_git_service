@@ -1,9 +1,22 @@
 [package]
 name = "detect_git_service"
-version = "0.1.0"
-authors = ["rhysd <lin90162@yahoo.co.jp>"]
+version = "1.0.0"
+authors = ["rhysd <https://rhysd.github.io>"]
 edition = "2018"
+description = "Detect Git hosting service from file path"
+repository = "https://github.com/rhysd/detect_git_service"
+readme = "README.md"
+include = ["/src/**/*.rs", "/Cargo.toml", "/LICENSE"]
+license = "MIT"
 
 [dependencies]
 url = "1.7.2"
 diff-enum = "0.1.3"
+
+[dev-dependencies]
+cargo-husky = "1.3.0"
+
+[badges]
+maintenance = { status = "passively-maintained" }
+# travis-ci = { repository = "rhysd/world-map-gen" }
+# appveyor = { repository = "rhysd/world-map-gen" }
