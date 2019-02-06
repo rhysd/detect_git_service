@@ -47,7 +47,7 @@ Add [`detect_git_service`][crate] to your crate's dependencies.
 
 Distributed under [the MIT License](LICENSE).
 
-[proj]: https://rhysd.github.io/detect_git_service
+[proj]: https://github.com/rhysd/detect_git_service
 [crate]: https://crates.io/crates/detect_git_service
 [crate-badge]: https://img.shields.io/crates/v/detect_git_service.svg
 [doc-badge]: https://docs.rs/detect_git_service/badge.svg
