@@ -7,15 +7,23 @@ use std::str;
 
 pub struct Git<'a> {
     command: &'a str,
-    dir: &'a Path,
+    path: &'a Path,
 }
 
 impl<'a> Git<'a> {
+    fn dir(&self) -> &Path {
+        if self.path.is_file() {
+            self.path.parent().unwrap()
+        } else {
+            self.path
+        }
+    }
+
     pub fn command<S: AsRef<OsStr> + Debug>(&self, args: &[S]) -> Result<String> {
         let out = Command::new(&self.command)
-            .current_dir(self.dir)
+            .current_dir(self.dir())
             .arg("-C")
-            .arg(self.dir)
+            .arg(self.dir())
             .args(args)
             .output()
             .map_err(|e| Error::CommandCannotRun(e))?;
@@ -80,10 +88,42 @@ impl<'a> Git<'a> {
 }
 
 impl<'a> Git<'a> {
-    pub fn new<'b: 'a, 'c: 'a, P: AsRef<Path>>(dir: &'b P, git_cmd: Option<&'c str>) -> Git<'a> {
+    pub fn new<P: AsRef<Path>>(path: &'a P, git_cmd: Option<&'a str>) -> Git<'a> {
         Git {
             command: git_cmd.unwrap_or("git"),
-            dir: dir.as_ref(),
+            path: path.as_ref(),
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn tracking_remote() {
+        let p = Path::new(".");
+        let git = Git::new(&p, None);
+        let (url, branch) = git.tracking_remote().unwrap();
+        assert!(
+            url.starts_with("https://") || url.starts_with("ssh://"),
+            "{}",
+            url
+        );
+        assert!(url.contains("detect_git_service"), "{}", url);
+        assert!(branch.is_some(), "{:?}", branch);
+    }
+
+    #[test]
+    fn remote_url() {
+        let p = Path::new(".");
+        let git = Git::new(&p, None);
+        let url = git.remote_url("origin").unwrap();
+        assert!(
+            url.starts_with("https://") || url.starts_with("ssh://"),
+            "{}",
+            url
+        );
+        assert!(url.contains("detect_git_service"), "{}", url);
+    }
+} // mod tests

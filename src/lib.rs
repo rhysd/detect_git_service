@@ -6,4 +6,4 @@ mod git;
 mod service;
 
 pub use crate::error::Error;
-pub use crate::service::GitService;
+pub use crate::service::{detect, detect_with_git, GitService};
