@@ -3,16 +3,24 @@ use crate::git::Git;
 use std::path::Path;
 use url::{Host, Url};
 
+/// Enum variants of Git hosting services which this library supports.
 #[diff_enum::common_fields{
+    /// User name in the service
     user: String,
+    /// Repository name in the service
     repo: String,
+    /// Current branch name if available
     branch: Option<String>,
 }]
 #[derive(Debug)]
 pub enum GitService {
+    /// GitHub http://github.com
     GitHub,
+    /// GitHub Enterprise https://github.com/enterprise
     GitHubEnterprise,
+    /// GitLab https://gitlab.com/
     GitLab,
+    /// Bitbucket https://bitbucket.org/
     Bitbucket,
 }
 
@@ -62,6 +70,9 @@ fn detect_with_remote_and_branch(remote_url: String, branch: Option<String>) -> 
     }
 }
 
+/// Detect Git hosting service from a file path. Path can be both file path
+/// and directory path. It returns an error when input was invalid or no service
+/// was detected.
 pub fn detect<P: AsRef<Path>>(path: P) -> Result<GitService> {
     let path = path.as_ref();
     let git = Git::new(&path, None);
@@ -69,6 +80,7 @@ pub fn detect<P: AsRef<Path>>(path: P) -> Result<GitService> {
     detect_with_remote_and_branch(remote_url, branch)
 }
 
+/// Almost the same as `detect`, but with explicitly specifying Git command.
 pub fn detect_with_git<P, S>(path: P, git_cmd: S) -> Result<GitService>
 where
     P: AsRef<Path>,
@@ -90,12 +102,16 @@ mod tests {
         let p = Path::new(".");
         let service = detect(&p).unwrap();
         match service {
-            GitService::GitHub { user, repo, .. } => {
+            GitService::GitHub {
+                ref user, ref repo, ..
+            } => {
                 assert_eq!(user, "rhysd");
                 assert_eq!(repo, "detect_git_service");
             }
             _ => assert!(false, "unexpected service: {:?}", service),
         }
+        assert_eq!(service.user(), "rhysd");
+        assert_eq!(service.repo(), "detect_git_service");
     }
 
     #[test]
@@ -103,12 +119,16 @@ mod tests {
         let p = Path::new(".").join("LICENSE");
         let service = detect(&p).unwrap();
         match service {
-            GitService::GitHub { user, repo, .. } => {
+            GitService::GitHub {
+                ref user, ref repo, ..
+            } => {
                 assert_eq!(user, "rhysd");
                 assert_eq!(repo, "detect_git_service");
             }
             _ => assert!(false, "unexpected service: {:?}", service),
         }
+        assert_eq!(service.user(), "rhysd");
+        assert_eq!(service.repo(), "detect_git_service");
     }
 
     #[test]
@@ -116,12 +136,16 @@ mod tests {
         let p = Path::new(".");
         let service = detect_with_git(&p, "git").unwrap();
         match service {
-            GitService::GitHub { user, repo, .. } => {
+            GitService::GitHub {
+                ref user, ref repo, ..
+            } => {
                 assert_eq!(user, "rhysd");
                 assert_eq!(repo, "detect_git_service");
             }
             _ => assert!(false, "unexpected service: {:?}", service),
         }
+        assert_eq!(service.user(), "rhysd");
+        assert_eq!(service.repo(), "detect_git_service");
     }
 
     macro_rules! test_case_ok {

@@ -1,12 +1,31 @@
 use std::fmt;
 use std::io;
 
+/// Error caused by APIs in detect_git_service crate.
 #[derive(Debug)]
 pub enum Error {
-    GitCommandFailed { stderr: String, args: Vec<String> },
+    /// Error raised when underlying `git` execution has failed.
+    GitCommandFailed {
+        /// Stderr output from the failed command.
+        stderr: String,
+        /// Args used for the command execution.
+        args: Vec<String>,
+    },
+    /// Error raised when a shell command cannot be run as child process.
     CommandCannotRun(io::Error),
-    BrokenUrl { url: String, msg: String },
-    CannotDetect { reason: String },
+    /// Error raised when trying to parse a broken Git URL.
+    BrokenUrl {
+        /// A broken URL as string.
+        url: String,
+        /// What was broken.
+        msg: String,
+    },
+    /// Error raised when this library could not find any Git hosting service
+    /// from Git URL of the repository.
+    CannotDetect {
+        /// The reason why Git hosting service cannot be detected
+        reason: String,
+    },
 }
 
 impl fmt::Display for Error {
@@ -30,4 +49,5 @@ impl fmt::Display for Error {
     }
 }
 
+/// Result type dedicated for detect_git_service crate.
 pub type Result<T> = std::result::Result<T, Error>;
