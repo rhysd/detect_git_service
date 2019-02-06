@@ -45,7 +45,7 @@ impl GitService {
             (Some(u), Some(r)) => (u.to_string(), r.to_string()),
             _ => {
                 return Err(Error::CannotDetect {
-                    msg: format!("Path does not represent user/repo"),
+                    reason: format!("Path of Git URL does not represent user/repo"),
                 });
             }
         };
@@ -59,14 +59,26 @@ impl GitService {
             }
             host if host.starts_with("gitlab.") => Ok(GitService::GitLab { user, repo, branch }),
             _ => Err(Error::CannotDetect {
-                msg: format!("No service detected from URL {}", remote_url),
+                reason: format!("No service detected from URL {}", remote_url),
             }),
         }
     }
 
-    pub fn from<P: AsRef<Path>>(path: P) -> Result<GitService> {
+    pub fn detect<P: AsRef<Path>>(path: P) -> Result<GitService> {
         let path = path.as_ref();
         let git = Git::new(&path, None);
+        let (remote_url, branch) = git.tracking_remote()?;
+        GitService::from_remote_and_branch(remote_url, branch)
+    }
+
+    pub fn detect_with_git<P, S>(path: P, git_cmd: S) -> Result<GitService>
+    where
+        P: AsRef<Path>,
+        S: AsRef<str>,
+    {
+        let path = path.as_ref();
+        let git_cmd = git_cmd.as_ref();
+        let git = Git::new(&path, Some(git_cmd));
         let (remote_url, branch) = git.tracking_remote()?;
         GitService::from_remote_and_branch(remote_url, branch)
     }

@@ -59,20 +59,23 @@ impl<'a> Git<'a> {
     }
 
     pub fn tracking_remote(&self) -> Result<(String, Option<String>)> {
-        let (url, branch) = match self.command(&["rev-parse", "--abbrev-ref", "--symbolic", "@{u}"])
-        {
-            Ok(stdout) => {
-                // stdout is formatted as '{remote-name}/{branch-name}'
-                let mut entries = stdout.splitn(2, '/');
-                if let (Some(ref name), branch) = (entries.next(), entries.next()) {
-                    (self.remote_url(name), branch.map(str::to_string))
-                } else {
-                    (self.remote_url("origin"), None)
-                }
+        let output = self.command(&["rev-parse", "--abbrev-ref", "--symbolic", "@{u}"]);
+        let (url, branch) = if let Ok(stdout) = output {
+            // stdout is formatted as '{remote-name}/{branch-name}'
+            let mut entries = stdout.splitn(2, '/');
+            if let (Some(ref name), branch) = (entries.next(), entries.next()) {
+                (self.remote_url(name), branch.map(str::to_string))
+            } else {
+                (self.remote_url("origin"), None)
             }
-            Err(_) => (self.remote_url("origin"), None),
+        } else {
+            (self.remote_url("origin"), None)
         };
-        url.map(|u| (u, branch))
+        url.map(|u| (u, branch.or_else(|| self.current_branch().ok())))
+    }
+
+    pub fn current_branch(&self) -> Result<String> {
+        self.command(&["rev-parse", "--abbrev-ref", "--symbolic", "HEAD"])
     }
 }
 
