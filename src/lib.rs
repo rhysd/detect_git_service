@@ -1,7 +1,8 @@
 //! Detect Git hosting service from file path
 //!
 //! This library provides APIs to detect Git hosting service used for given
-//! file path. Service is based on a URL of remote repository of the path.
+//! file path. Service is detected based on a URL of remote repository of the
+//! path.
 //!
 //! ```
 //! use std::path::Path;
