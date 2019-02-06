@@ -51,7 +51,7 @@ fn detect_with_remote_and_branch(remote_url: String, branch: Option<String>) -> 
         (Some(u), Some(r)) => (u.to_string(), r.to_string()),
         _ => {
             return Err(Error::CannotDetect {
-                reason: format!("Path of Git URL does not represent user/repo"),
+                reason: "Path of Git URL does not represent user/repo".to_string(),
             });
         }
     };

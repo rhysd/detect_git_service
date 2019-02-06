@@ -26,7 +26,7 @@ impl<'a> Git<'a> {
             .arg(self.dir())
             .args(args)
             .output()
-            .map_err(|e| Error::CommandCannotRun(e))?;
+            .map_err(Error::CommandCannotRun)?;
 
         if out.status.success() {
             let s = str::from_utf8(&out.stdout)
