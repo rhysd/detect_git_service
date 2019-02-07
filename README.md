@@ -38,7 +38,8 @@ Please read [the documentation][doc] for more details.
 Add [`detect_git_service`][crate] to your crate's dependencies.
 
 ```toml
-"detect_git_service" = "1"
+[dependencies]
+detect_git_service = "1"
 ```
 
 
